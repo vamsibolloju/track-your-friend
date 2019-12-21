@@ -1,0 +1,14 @@
+.navbar{
+    background-color: #DC143C !important;
+    
+}
+
+.navbar a{
+    color: antiquewhite;
+}
+
+
+.fa{
+    margin: 0 4px;
+    cursor: pointer;   
+}

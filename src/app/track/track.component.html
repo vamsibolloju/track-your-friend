@@ -1,0 +1,44 @@
+<div class="container">
+    
+        <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">@</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1">
+        </div>
+
+        <ul class="list-group">
+                <li class="list-group-item" *ngFor="let contact of friends">
+                    <span class="status" [ngClass]="contact.status">  </span>
+                    <span> {{contact.name}} </span>
+                    <i class="fa fa-trash" aria-hidden="true" (click)="removeFriend(contact)"></i>
+
+                    <i class="fa fa-location-arrow" aria-hidden="true" (click)="trackFriend(contact)"></i>
+
+                    <div [hidden]="!contact.toggle">
+                      <hr>
+
+                      <i class="fa fa-refresh" aria-hidden="true"></i>
+
+                        address
+                        
+                          {{contact | json}}
+                        
+                    </div>
+                  </li>
+              </ul>
+              <br>
+              <button type="button" 
+              class="btn btn-custom btn-lg btn-block"
+              (click)="addAFriend()">
+                  Add a friend
+              </button>
+      
+
+
+    <!--
+    <agm-map [latitude]='latitude' [longitude]='longitude' 
+      [mapTypeId]='mapType'>
+    </agm-map>
+    -->
+</div>
