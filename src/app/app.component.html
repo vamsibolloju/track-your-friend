@@ -18,12 +18,21 @@
     <ul class="navbar-nav ml-md-auto">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/about']" > 
-            About <span class="sr-only">(current)</span>
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            About 
+            <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/login']"> Login </a>
+        <li class="nav-item" [hidden]="currentUser">
+          <a class="nav-link" [routerLink]="['/login']"> 
+            <i class="fa fa-sign-in" aria-hidden="true"></i>
+            Login </a>
         </li>
+        <li class="nav-item" [hidden]="!currentUser">
+            <a class="nav-link" href="" (click)="logout($event)"> 
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                 Logout </a>
+          </li>
     </ul>
     </div>
     

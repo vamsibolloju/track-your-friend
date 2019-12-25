@@ -1,14 +1,46 @@
 <div class="container">
-        <form>
+    <div class="alert alert-danger" role="alert" *ngIf="errorMessages.length">
+        <span class="float-right">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>  
+          <span>
+              {{errorMessages}}
+          </span>
+      </div>
+        <form (submit)="login(loginForm.form.value)" #loginForm="ngForm">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Mobile number</label>
-                  <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter mobile number">
+                  <label for="exampleInputEmail1"> 
+                    <i class="fa fa-mobile" aria-hidden="true"></i>
+                    Mobile number</label>
+                  <input type="number" 
+                  class="form-control" 
+                  id="exampleInputEmail1" 
+                  aria-describedby="emailHelp" 
+                  placeholder="Enter mobile number"
+                  name="mobile"
+                  [(ngModel)]="user['mobile']"
+                  required>
                 </div>
+                
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                  <label for="exampleInputPassword1">
+                    <i class="fa fa-user-secret" aria-hidden="true"></i>
+                    Password
+                  </label>
+                  <input type="password" 
+                  class="form-control" 
+                  id="exampleInputPassword1" 
+                  placeholder="Password"
+                  name="password"
+                  [(ngModel)]="user['password']"
+                  required
+                  >
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary" [disabled]="loginForm.form.invalid">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    Login
+                </button>
             </form>
+            <hr>
             <a [routerLink]="['/signup']"> Are you new? Please signup here...  </a>
 </div>

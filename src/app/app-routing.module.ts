@@ -5,20 +5,27 @@ import { TrackComponent } from './track/track.component';
 import { AddAFriendComponent } from './add-afriend/add-afriend.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { AuthGuard } from '../app/shared/guards/auth.guard';
+import { ShouldNotAuthGuard } from '../app/shared/guards/should-not-auth.guard';
+
 
 const routes: Routes = [{
     path: 'about', component: AboutComponent  
   },{
-    path: '', component: TrackComponent
+    path: '', component: TrackComponent,
+    canActivate: [ AuthGuard ]
   },
   {
-    path: 'add-a-friend', component: AddAFriendComponent
+    path: 'add-a-friend', component: AddAFriendComponent,
+    canActivate: [ AuthGuard ]
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'login', component: LoginComponent,
+    canActivate: [ ShouldNotAuthGuard ]
   },
   {
-    path: 'signup', component: SignupComponent
+    path: 'signup', component: SignupComponent,
+    canActivate: [ ShouldNotAuthGuard ]
   }
 ];
 

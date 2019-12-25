@@ -1,6 +1,32 @@
 <div class="container">
     <br>
-        <form (submit)="addFriend($event)">
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1"> 
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </span>
+        </div>
+        <input type="text" [value]="query" (input)="onSearch($event)" class="form-control" placeholder="serach by name or mobilre number">
+    </div>
+
+  <div class="list-group" style="margin-top: 2px" *ngFor="let item of list | friendsSearch: searchQuery ">
+      <span class="list-group-item list-group-item-action flex-column align-items-start active">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1"> 
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            {{item.name}} / {{item.mobile}}  
+          </h5>
+          <button (click)="addFriendFromList(item)" class="btn btn-secondary btn-sm"> Add  </button>
+        </div>
+        <p class="mb-1">details</p>
+      </span>
+      
+    </div>
+    <hr>
+ 
+    <!--
+    <form (submit)="addFriend($event)">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Friend name</label>
                   <input type="text" class="form-control" 
@@ -18,4 +44,5 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
+              -->
 </div>

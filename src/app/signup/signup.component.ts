@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FriendsService } from '../shared/services/friends.service';
 
 @Component({
   selector: 'app-signup',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupComponent implements OnInit {
 
-  constructor() { }
+  user: object = { name: '', mobile: '', password: '' } 
+  constructor(private router: Router,
+    private friendsService: FriendsService) { }
 
   ngOnInit() {
+  }
+
+  signUp(user: object){
+    this.friendsService.addFriend(user);
+    this.router.navigateByUrl('/');
   }
 
 }

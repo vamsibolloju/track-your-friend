@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { FriendsService } from '../shared/services/friends.service';
 
@@ -10,16 +10,20 @@ import { FriendsService } from '../shared/services/friends.service';
 export class TrackComponent implements OnInit {
 
   friends;
+  currentUser: object | boolean;
+  selected: object;
+  searchQuery:string;
 
-  latitude = -28.68352;
-  longitude = -147.20785;
-  mapType = 'satellite';
+  lon = 7.37448169999999;
+  lat = 17.421397799999998;
 
   constructor(private router: Router,
     private friendsService: FriendsService ) { }
 
   ngOnInit() {
-    this.friends = this.friendsService.getAllFriends();
+    this.currentUser = this.friendsService.getCurrentUser();
+    this.friends = this.friendsService.getUserFriends(this.currentUser);
+    this.selected = this.friends[0];
   }
 
   addAFriend() {
@@ -30,6 +34,12 @@ export class TrackComponent implements OnInit {
     this.friendsService.removeFriend(friend);
     this.ngOnInit();
   }
+
+  unlinkFriend(friend: object){
+    this.friendsService.unlinkFriend(this.currentUser, friend);
+    this.ngOnInit();
+  }
+
 
   trackFriend(friend: object){
     friend['toggle'] = !friend['toggle'];
@@ -45,11 +55,21 @@ export class TrackComponent implements OnInit {
           'latitude': position.coords.latitude,
           'longitude': position.coords.longitude
         };
-        console.log(friend);
       });
     }catch(e){
 
     }
   }
 
+  selectFriend(friend: object){
+    this.selected = friend;
+  }
+
+  refreshLocation(event: Event, friend: object){
+    event.stopPropagation();
+  }
+
+  onQuery(event: Event){
+    this.searchQuery = event.target['value'];
+  }
 }

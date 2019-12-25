@@ -1,7 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-//AIzaSyB9YmivYqaonY_N27jmb0ulUo4rGXmZFyY
-import { AgmCoreModule } from '@agm/core';
 import { FormsModule }   from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +12,12 @@ import { FriendsService } from './shared/services/friends.service';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 
+import { AuthGuard } from '../app/shared/guards/auth.guard';
+import { CurrentUserResolver } from '../app/shared/resolvers/currentUser.resolver';
+import { ShouldNotAuthGuard } from './shared/guards/should-not-auth.guard';
+import { MapComponent } from './map/map.component';
+import { FriendsSearchPipe } from './shared/pipes/friendsSearch.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,22 +25,16 @@ import { SignupComponent } from './signup/signup.component';
     TrackComponent,
     AddAFriendComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    MapComponent,
+    FriendsSearchPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    AgmCoreModule.forRoot({
-      //apiKey: 'AIzaSyB9YmivYqaonY_N27jmb0ulUo4rGXmZFyY'
-      apiKey: 'AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU'
-      /* apiKey is required, unless you are a 
-      premium customer, in which case you can 
-      use clientId 
-      */
-    })
+    FormsModule
   ],
-  providers: [ FriendsService ],
+  providers: [ FriendsService, AuthGuard, ShouldNotAuthGuard, CurrentUserResolver ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

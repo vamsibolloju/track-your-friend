@@ -11,11 +11,21 @@ export class AddAFriendComponent implements OnInit {
 
   friendName: string;
   friendMobile: number;
+  query: string = '';
+  list: Array<object>;
+  currentUser:object | boolean;
+  searchQuery:string;
 
   constructor(private router: Router,
     private _friendsService:FriendsService) { }
 
   ngOnInit() {
+    this.currentUser = this._friendsService.getCurrentUser();
+    this.list = this._friendsService.getUserNonFriends(this.currentUser);
+  }
+
+  onSearch(eve : Event){
+    this.searchQuery = eve.target['value'];
   }
 
   addFriend(event: Event) {
@@ -25,6 +35,11 @@ export class AddAFriendComponent implements OnInit {
       mobile: this.friendMobile
     });
     this.router.navigateByUrl('/')
+  }
+
+  addFriendFromList(friend: object){
+    this._friendsService.addAFriend(this.currentUser, friend);
+    this.router.navigateByUrl('/');
   }
 
 }

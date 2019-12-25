@@ -1,19 +1,28 @@
 <div class="container">
     
+
+    <app-map [lon]="selected['lon']" [lat]="selected['lat']" ></app-map>
+
+
         <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">@</span>
+                  <span class="input-group-text" id="basic-addon1"> 
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </span>
                 </div>
-                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1">
+                <input type="text" class="form-control" placeholder="Search with name or mobile ..." aria-label="Search" aria-describedby="basic-addon1" (input)="onQuery($event)">
         </div>
 
-        <ul class="list-group">
-                <li class="list-group-item" *ngFor="let contact of friends">
+        <ul class="list-group" *ngIf="(friends | friendsSearch: searchQuery) as filteredFriends">
+                <li class="list-group-item" 
+                *ngFor="let contact of filteredFriends"
+                [ngClass]="{'selected' : selected['name'] === contact['name'] }"
+                (click)="selectFriend(contact)">
                     <span class="status" [ngClass]="contact.status">  </span>
-                    <span> {{contact.name}} </span>
-                    <i class="fa fa-trash" aria-hidden="true" (click)="removeFriend(contact)"></i>
-
-                    <i class="fa fa-location-arrow" aria-hidden="true" (click)="trackFriend(contact)"></i>
+                    <span> {{contact.name}} - {{contact.mobile}} </span>
+                    <i class="fa fa-right fa-trash" aria-hidden="true" (click)="unlinkFriend(contact)"></i>
+                    <i class="fa fa-right fa-location-arrow" aria-hidden="true" (click)="trackFriend(contact)"></i>
+                    <i class="fa fa-right fa-refresh" aria-hidden="true" [hidden]="selected['name'] !== contact['name']" (click)="refreshLocation($event, contact)"></i>
 
                     <div [hidden]="!contact.toggle">
                       <hr>
@@ -26,19 +35,16 @@
                         
                     </div>
                   </li>
+                  <li [hidden]="filteredFriends.length" class="list-group-item text-danger"> 
+                    No friend found with this query.  
+                  </li>
               </ul>
               <br>
               <button type="button" 
-              class="btn btn-custom btn-lg btn-block"
+              class="btn btn-primary"
               (click)="addAFriend()">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
                   Add a friend
               </button>
       
-
-
-    <!--
-    <agm-map [latitude]='latitude' [longitude]='longitude' 
-      [mapTypeId]='mapType'>
-    </agm-map>
-    -->
 </div>
