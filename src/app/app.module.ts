@@ -18,6 +18,9 @@ import { ShouldNotAuthGuard } from './shared/guards/should-not-auth.guard';
 import { MapComponent } from './map/map.component';
 import { FriendsSearchPipe } from './shared/pipes/friendsSearch.pipe';
 
+import { StoreModule } from '@ngrx/store';
+import { reducer } from 'src/store/reducers/users.reducer';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +35,10 @@ import { FriendsSearchPipe } from './shared/pipes/friendsSearch.pipe';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot({
+      user: reducer  
+    })
   ],
   providers: [ FriendsService, AuthGuard, ShouldNotAuthGuard, CurrentUserResolver ],
   bootstrap: [AppComponent]

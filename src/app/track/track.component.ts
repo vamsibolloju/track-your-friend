@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { FriendsService } from '../shared/services/friends.service';
+import { Observable, from } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { User } from '../../store/models/user.model';
+import { AppState } from '../app.state'; 
 
 @Component({
   selector: 'app-track',
@@ -13,12 +17,16 @@ export class TrackComponent implements OnInit {
   currentUser: object | boolean;
   selected: object;
   searchQuery:string;
+  users : Observable<User[]>;
 
   lon = 7.37448169999999;
   lat = 17.421397799999998;
 
   constructor(private router: Router,
-    private friendsService: FriendsService ) { }
+    private friendsService: FriendsService,
+    private store: Store<AppState> ) { 
+      this.users = this.store.select('user');
+    }
 
   ngOnInit() {
     this.currentUser = this.friendsService.getCurrentUser();
