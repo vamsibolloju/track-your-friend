@@ -1,15 +1,122 @@
-<div class="jumbotron">
-        <h1 class="display-4">Track your friend</h1>
-        <p class="lead"> 
-            This is very simple mobile tracking browser based application.
-        </p>
-        <hr class="my-4">
-        <p>
-            It uses browser's navigator object to grab the current location of the device for tracking purpose.
-        </p>
-        <p class="lead">
-          <a class="btn btn-primary btn-lg" href="#" role="button">
-             Start tracking ...
-        </a>
-        </p>
+<div class="container">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item" *ngFor="let section of sections">
+          <a class="nav-link" [ngClass]=" { 'active' : section === selectedSection } "  href="" (click)="onSectionSelection($event, section)" >
+            {{section}}
+          </a>
+        </li>
+      </ul>
+      
+    <div class="jumbotron">
+        <div *ngIf="selectedSection === 'Application'">
+            <p>
+                "Track your friend" is very simple mobile tracking browser based application.
+                It uses browser's navigator object to grab the current location of the device for tracking purpose.
+            </p>
+            <div> <b> Use cases: </b> <br>
+              Here is the list of usecases fulfilled by this application 
+              
+              <ul>
+                <li> One can know the current location of one's friends. </li>
+                <li> One can track the location of one's friends </li>
+                <li> One can set the destination for one of one's friend, once that friend reached the destination the user will be notified.
+                  If the frind blocks at any location more that 5 minuits with out moving, the user will be notified with the same. </li>
+              </ul>
+             </div>
+
+             <div> <b> Flow: </b> <br>
+              Here is the flow for a user to track his/her friends:
+              <ul>
+              <li> User should athenticate to this application. New users can create account and authenticate. </li>
+              <li> User will have an option to add other users as friends. </li>
+              <li> User need to request friend to know the location of the friend, once the user approves the request then the user can track his frind's location.  </li>
+            </ul>
+            </div>
+            <p> Here is the list of pages with description available in the application. </p>
+            <p> <b>  Login: </b> This is the default page of this application for non authenticated users. This page allows user to authenticate in to this application with username and password. If user is authenticated already and tries to navigate this page, application will forward the request to default page of authenticated users which is track page.    </p>
+            <p> <b> Signup: </b> This page allows new users to create account in to this application. We can navigate to this page by clicking signup link available in login page. </p>
+            <p> <b> Track: </b> 
+              This is the main page of this application. This page is for authenticated users only. If any user tries to navigate this page without authentication, application will forward the request to login page to force the user to authenticate first. If the user is new to this application, that user can create account first by using signup link in the login page.  
+              This page shows the list of friends of the user, from there user can select any friend and track the mobile of the friend's location in the map available on top of the list of friends section. The map is visible when only any of the friend is selected by clicking on it.
+              There is a button to navigate to "add a friend" page below the friends list section. 
+            </p>
+            <p> <b> Add a friend: </b>  This page allows the user to add any non friend to make friend.
+              A serach input box is available which is used to search non friends list with username of mobile number.
+              Below of the search input a list of non friends of the user is displayed from there we can add the non friend as a friend of the user by clicking add button of the non friend item.
+            </p>
+            <p> <b> About: </b> This page contains the information about this application, it's use caes, Technologies used for this application, and some references. This page doesn't require any authentication.   </p>
+
+
+        </div>
+        <div *ngIf="selectedSection === 'Technologies used'">
+              This application is developed by implementing client side, server side and database.
+              <hr>
+              <div>
+                <b> Client: </b> <br>
+                Client application is implemented by using HTML, CSS, Javascript. 
+                We choose angular framework to develop this application.
+              </div>
+              <hr>
+              <div>
+                <b> Server: </b> <br>
+                We implemented two servers, one is for creating rest api and other is for maintaining sockets.
+                RestAPI is implemented with PHP.
+              </div>
+              <hr>
+              <div>
+                <b> Database: </b> <br>
+                We use MySql database to store users collection and it's related friends.
+              </div>
+        </div>
+        <div *ngIf="selectedSection === 'Hosting'">
+          As we implemented client, server and database applications for this application, we need to deploy all these three applications.
+          We choose almost cheap/free and best hosting services for these applications.
+          <hr>
+          <div>
+            <b> Client: </b> <br>
+            To deploy client aplications there are many options ( free and best ) available.
+            We choose <a target="_blank" href="https://surge.sh/"> Surge </a> from them, as it is very easy and efficient to use.
+          </div>
+          <hr>
+          <div>
+            <b> Server: </b> <br>
+            To deploy server applications ( both PHP and NodeJS applications ) we use <a target="_blank" href="https://dashboard.heroku.com/login"> heroku </a>.
+          </div>
+          <hr>
+          <div>  
+            <b> Database </b> <br>
+            To deploy MySql database on cloud, we use <a href="https://remotemysql.com/" target="_blank"> remote mysql </a>
+          </div>
+        </div>
+        <div *ngIf="selectedSection === 'References'" class="row">
+          <div class="col-md-4">
+            <b> Fontend </b> <br>
+            <ul>
+              <li> <a target="_blank" href="https://www.youtube.com/watch?v=pQN-pnXPaVg&t=4508s"> HTML5 Tutorial </a> </li>
+              <li> <a target="_blank" href="https://www.youtube.com/watch?v=yfoY53QXEnI"> CSS3 </a> </li>
+              <li> <a target="_blank" href="https://www.youtube.com/watch?v=o1IaduQICO0&t=5312s"> Javascript Tutorial </a> </li>
+              <li> <a target="_blank" href="https://www.youtube.com/watch?v=2OMzGhlIZpg"> Jquery </a> </li>
+              <li> <a target="_blank" href="https://www.youtube.com/watch?v=CMk8xB90RpU&t=721s"> Bootstrap </a> </li>
+              <li> <a target="_blank" href="https://www.youtube.com/watch?v=k5E2AVpwsko"> Angular </a> </li>
+            </ul>
+          </div>
+          
+          <div class="col-md-4">
+            <b> Server </b><br>
+            <ul>
+             <li> <a target="_blank" href="https://www.youtube.com/watch?v=OK_JCtrrv-c" > PHP </a>  </li>
+             <li> <a target="_blank" href="https://www.youtube.com/watch?v=TlB_eWDSMt4" > NodeJS </a>  </li>
+            </ul>
+          </div>
+            
+          <div class="col-md-4">
+            <b> Database </b><br>
+            <ul>
+              <li> <a target="_blank" href="https://www.youtube.com/watch?v=7S_tz1z_5bA">  My Sql  </a>  </li>
+            </ul>
+
+          </div>
+        </div>
+
 </div>

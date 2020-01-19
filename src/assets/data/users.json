@@ -1,0 +1,62 @@
+[{
+    "id": "1",  
+    "name": "vamsikrishna",
+    "mobile": 9876543213,
+    "password": "test123",
+    "status": "current",
+    "toggle": false,
+    "lat": 5,
+    "lon": 5,
+    "friends": [ "2" ]
+}, {
+  "id": "2",  
+  "name" : "ganapathi",
+    "mobile": 9876875432,
+    "password": "test123",
+    "status": "current",
+    "toggle": false,
+    "lon": 17,
+    "lat": 78,
+    "friends": [ "1" ]
+  }, {
+    "id": "3",  
+    "name": "suguna",
+    "mobile": 9876875432,
+    "password": "test123",
+    "status": "pending",
+    "toggle": false,
+    "lon": 7,
+    "lat": 7,
+    "friends": []    
+  },
+  {
+    "id": "4",  
+    "name": "rajini",
+    "mobile": 9876875432,
+    "password": "test123",
+    "status": "past",
+    "toggle": false,
+    "lon": 8,
+    "lat": 8,
+    "friends": []
+  }, {
+    "id": "5",  
+    "name": "chinni",
+    "mobile": 9876875432,
+    "password": "test123",
+    "status": "past",
+    "toggle": false,
+    "lon": 9,
+    "lat": 9,
+    "friends": []
+  },{    
+    "id": "6",  
+    "name": "santosh",
+    "mobile": 9876875432,
+    "password": "test123",
+    "status": "past",
+    "toggle": false,
+    "lon": 10,
+    "lat": 10,
+    "friends": []
+  }]

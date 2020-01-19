@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "surge": "surge --domain shreyasproject.surge.sh ./dist/shreya-project"
+    "surge": "surge --domain track-my-friend.surge.sh ./dist/shreya-project"
   },
   "private": true,
   "dependencies": {
@@ -20,11 +20,14 @@
     "@angular/platform-browser": "~8.2.0",
     "@angular/platform-browser-dynamic": "~8.2.0",
     "@angular/router": "~8.2.0",
+    "@ngrx/effects": "^8.6.0",
+    "@ngrx/entity": "^8.6.0",
     "@ngrx/store": "^8.6.0",
     "bootstrap": "^4.4.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
     "leaflet": "^1.6.0",
+    "ngx-socket-io": "^3.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

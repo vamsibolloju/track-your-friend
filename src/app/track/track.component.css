@@ -36,5 +36,6 @@
 }
 
 .list-group-item.selected{
-   background-color: peru;
+   background-color: black;
+   color: white;
 }

@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutComponent implements OnInit {
 
+  public sections: Array<string> = ['Application', 'Technologies used', 'Hosting', 'References']
+  public selectedSection: string = this.sections[0];
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSectionSelection(event: Event, section: string){
+    event.preventDefault();
+    this.selectedSection = section;
   }
 
 }

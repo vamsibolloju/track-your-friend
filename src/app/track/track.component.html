@@ -1,31 +1,28 @@
 <div class="container">
-    <!--
-      <p *ngFor="let u of users | async"> {{u | json}} </p>
-    -->
-    
-    <app-map [lon]="selected['lon']" [lat]="selected['lat']" ></app-map>
-
-
-        <div class="input-group mb-3">
+    <app-map *ngIf="selected" [lon]="selected['lon']" [lat]="selected['lat']" ></app-map>
+    <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"> 
                     <i class="fa fa-search" aria-hidden="true"></i>
                   </span>
                 </div>
-                <input type="text" class="form-control" placeholder="Search with name or mobile ..." aria-label="Search" aria-describedby="basic-addon1" (input)="onQuery($event)">
+                <input #query type="text" class="form-control" placeholder="Search with name or mobile ..." aria-label="Search" aria-describedby="basic-addon1" (input)="onQuery($event)">
         </div>
 
-        <ul class="list-group" *ngIf="(friends | friendsSearch: searchQuery) as filteredFriends">
+        <div [hidden]="!(loading$ | async)" >
+          <img src="assets/icons/loading.gif" width="180px" height="80px" /> 
+        </div>
+        <ul class="list-group" *ngIf="(users$ | async ) as filteredFriends">
                 <li class="list-group-item" 
                 *ngFor="let contact of filteredFriends"
-                [ngClass]="{'selected' : selected['name'] === contact['name'] }"
+                [ngClass]="{'selected' : selected?.name === contact['name'] }"
                 (click)="selectFriend(contact)">
                     <span class="status" [ngClass]="contact.status">  </span>
                     <span> {{contact.name}} - {{contact.mobile}} </span>
                     <i class="fa fa-right fa-trash" aria-hidden="true" (click)="unlinkFriend(contact)"></i>
                     <i class="fa fa-right fa-location-arrow" aria-hidden="true" (click)="trackFriend(contact)"></i>
-                    <i class="fa fa-right fa-refresh" aria-hidden="true" [hidden]="selected['name'] !== contact['name']" (click)="refreshLocation($event, contact)"></i>
-
+                    <i class="fa fa-right fa-refresh" aria-hidden="true" [hidden]="selected?.name !== contact.name" (click)="refreshLocation($event, contact)"></i>
+          
                     <div [hidden]="!contact.toggle">
                       <hr>
 
@@ -37,8 +34,10 @@
                         
                     </div>
                   </li>
-                  <li [hidden]="filteredFriends.length" class="list-group-item text-danger"> 
-                    No friend found with this query.  
+                  <li [hidden]="(filteredFriends)?.length || (loading$ |async)" class="list-group-item text-danger"> 
+                    <span *ngIf="query.value"> No friend found with this query. </span>
+                    <span *ngIf="!query.value"> You have no friends yet, Please add. </span>
+                      
                   </li>
               </ul>
               <br>

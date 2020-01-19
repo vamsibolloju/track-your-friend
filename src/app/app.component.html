@@ -1,12 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<!--
-<div style="text-align:center">
-  <h1>
-    Shreya's degree project!
-  </h1>
-</div>
--->
-
 <nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand" [routerLink]="['/']"> 
        <img width="20" height="20" style="margin-right: 10px;" src="assets/track-logo.png"> Track Your Friend 
@@ -23,16 +14,34 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item" [hidden]="currentUser">
+        <li class="nav-item" [hidden]="currentUser$">
           <a class="nav-link" [routerLink]="['/login']"> 
             <i class="fa fa-sign-in" aria-hidden="true"></i>
             Login </a>
         </li>
-        <li class="nav-item" [hidden]="!currentUser">
+        <li class="nav-item dropdown"  [hidden]="!(currentUser$ | async)">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ (currentUser$ | async)?.name}}
+          </a>
+          <div class="dropdown-menu" style="left: -20px;" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" [routerLink]="['/profile']">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              Profile
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="" (click)="logout($event)">
+              <i class="fa fa-sign-out" aria-hidden="true"></i> 
+              Logout
+            </a>
+          </div>
+        </li>
+        <!--
+        <li class="nav-item" [hidden]="!(currentUser$ | async)">
             <a class="nav-link" href="" (click)="logout($event)"> 
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
                  Logout </a>
           </li>
+          -->
     </ul>
     </div>
     

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FriendsService } from '../shared/services/friends.service';
+import { User } from 'src/store/models/user.model';
 
 @Component({
   selector: 'app-signup',
@@ -16,7 +17,7 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
   }
 
-  signUp(user: object){
+  signUp(user: User){
     this.friendsService.addFriend(user);
     this.router.navigateByUrl('/');
   }

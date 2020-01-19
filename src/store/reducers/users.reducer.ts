@@ -1,22 +1,42 @@
-import { Action } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
+import { createEntityAdapter, EntityState, EntityAdapter } from '@ngrx/entity';
 import { User } from '../models/user.model';
 import * as UserActions from '../actions/user.actions';
 
-const initialState: User = {
-    name: 'vamsikrishna',
-    mobile: 9876543213,
-    password: 'test123',
-    status: 'active',
-    toggle: false,
-    lat: 5,
-    lon: 5
-};
-
-export function reducer(state: User[] = [ initialState ] , action: UserActions.AddUser ){
-    switch(action.type){
-        case UserActions.ADD_USER:
-            return [...state, action.payload]
-        default:
-            return state;
-    }
+export interface UsersState extends EntityState<User> {
+  loading: boolean;
+  query: string;
 }
+
+export const adapter: EntityAdapter<User> = createEntityAdapter();
+
+const initialState: UsersState = adapter.getInitialState({
+  loading: false,
+  query: ''
+});
+
+
+const UserReducerFunction = createReducer(
+    initialState,
+    on(UserActions.loadUsers, (state) => {
+      return ({ ...state, loading: true });
+    }),
+    on(UserActions.loadUsersSuccess, 
+      (state, { users }) => 
+      {
+        state = {...state, loading: false};
+        return adapter.addAll(users, state) 
+      }),
+    on(UserActions.onQueryChange, 
+      (state, { query }) => {
+        return { ...state, query: query }
+      })  
+  );
+  
+  export function UserReducer(state: UsersState | undefined, action: Action) {
+    return UserReducerFunction(state, action);
+  }
+
+  export const {
+    selectAll
+  } = adapter.getSelectors();

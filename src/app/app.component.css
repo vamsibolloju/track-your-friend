@@ -7,6 +7,9 @@
     color: antiquewhite;
 }
 
+a.dropdown-item{
+    color: chocolate !important;
+}
 
 .fa{
     margin: 0 4px;

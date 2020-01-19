@@ -1,15 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { User } from '../models/user.model';
 
-export const ADD_USER = '[USER] Add';
+export const loadUsers = createAction('[Users Page] Load Users');
 
-export class AddUser implements Action{
-    readonly type = ADD_USER;
-    
-    constructor(public payload: User){
+export const loadUsersSuccess = createAction('[Users Page] Load Users Success', 
+                props<{users: Array<User>}>());
 
-    }
-}
-
-export type Actions = AddUser;
+export const onQueryChange = createAction('[Users Page] Search Query Change', 
+                props<{query: string}>());
+                            

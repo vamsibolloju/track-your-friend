@@ -1,0 +1,11 @@
+{
+    "id": "1",
+    "name": "vamsikrishna",
+    "mobile": 9876543213,
+    "password": "test123",
+    "status": "current",
+    "toggle": true,
+    "lat": 5,
+    "lon": 5,
+    "friends": [ "2", "3" ]
+}

@@ -1,0 +1,18 @@
+<div class="container" *ngIf="(currentUser$ | async) as currentUser">
+  <div class="row"> 
+    <div class="col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item"> 
+          <span> Name </span> <br>  <b> {{ currentUser.name}} </b>  
+        </li>
+        <li class="list-group-item"> 
+          <span> Mobile </span> <br> <b> {{ currentUser.mobile}}  </b>  </li>
+        <li class="list-group-item"> 
+          <span> Password </span>  <br> <b> {{ currentUser.password}}  </b>  </li>
+      </ul>
+    </div>  
+    <div class="col-md-6">
+    </div>  
+  </div>
+</div>
+

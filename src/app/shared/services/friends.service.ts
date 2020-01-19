@@ -1,54 +1,32 @@
 import { Injectable } from '@angular/core';
+import { User } from '../../../store/models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FriendsService {
 
-  private friends: Array<object> = [{ 
+  private friends: Array<User> = [{ 
+    id: '1',
     name : 'vamsikrishna',
     mobile: 9876875432,
     password: 'test123',
     status: 'never',
     toggle: false,
     lon: 5,
-    lat: 5 
+    lat: 5,
+    friends: [ '2' ] 
   }, {
+    id: '2',
     name : 'ganapathi',
-    mobile: '9876875432',
+    mobile: 9876875432,
     password: 'test123',
+    toggle: false,
     status: 'current',
     lon: 6,
-    lat: 6
-  }, {
-    name: 'suguna',
-    mobile: '9876875432',
-    password: 'test123',
-    status: 'pending',
-    lon: 7,
-    lat: 7    
-  },
-  {
-    name: 'rajini',
-    mobile: '9876875432',
-    password: 'test123',
-    status: 'past',
-    lon: 8,
-    lat: 8
-  }, {
-    name: 'chinni',
-    mobile: '9876875432',
-    password: 'test123',
-    status: 'past',
-    lon: 9,
-    lat: 9
-  },{    
-    name: 'santosh',
-    mobile: '9876875432',
-    password: 'test123',
-    status: 'past',
-    lon: 10,
-    lat: 10
+    lat: 6,
+    friends: [ ] 
+
   }];
 
   private friendLinks = { 'vamsikrishna' : [ 'ganapathi', 'suguna' ] }
@@ -70,7 +48,7 @@ export class FriendsService {
     return this.friends.filter( f => !friends.includes(f['name']) );
   }
 
-  addFriend(friend: object){
+  addFriend(friend: User){
     this.friends.push(friend);
   }
   

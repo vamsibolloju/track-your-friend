@@ -1,6 +1,5 @@
 <div class="container">
     <br>
-
     <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1"> 
@@ -10,7 +9,10 @@
         <input type="text" [value]="query" (input)="onSearch($event)" class="form-control" placeholder="serach by name or mobilre number">
     </div>
 
-  <div class="list-group" style="margin-top: 2px" *ngFor="let item of list | friendsSearch: searchQuery ">
+    <div [hidden]="!(loading$ | async)"> 
+      <img src="assets/icons/loading.gif" width="180px" height="80px" /> 
+    </div>
+  <div class="list-group" style="margin-top: 2px" *ngFor="let item of users$ | async | friendsSearch: searchQuery">
       <span class="list-group-item list-group-item-action flex-column align-items-start active">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1"> 
@@ -24,25 +26,4 @@
       
     </div>
     <hr>
- 
-    <!--
-    <form (submit)="addFriend($event)">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Friend name</label>
-                  <input type="text" class="form-control" 
-                  id="exampleInputEmail1" aria-describedby="emailHelp" 
-                  placeholder="Enter friend name"
-                  name="friendName"
-                  [(ngModel)]="friendName">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword1">Mobile number</label>
-                  <input type="number" class="form-control" 
-                  id="exampleInputPassword1" placeholder="Mobile number"
-                  name="friendMobile"
-                  [(ngModel)]="friendMobile">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </form>
-              -->
 </div>

@@ -17,9 +17,19 @@ import { CurrentUserResolver } from '../app/shared/resolvers/currentUser.resolve
 import { ShouldNotAuthGuard } from './shared/guards/should-not-auth.guard';
 import { MapComponent } from './map/map.component';
 import { FriendsSearchPipe } from './shared/pipes/friendsSearch.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 import { StoreModule } from '@ngrx/store';
-import { reducer } from 'src/store/reducers/users.reducer';
+import { EffectsModule } from '@ngrx/effects';
+
+import { UserReducer } from 'src/store/reducers/users.reducer';
+import { CurrentUserReducer } from 'src/store/reducers/currentUser.reducer';
+import { ProfileComponent } from './profile/profile.component';
+import { UsersEffects } from '../store/effects/users.effect';
+import { CurrentUserEffects } from '../store/effects/currentUser.effect';
+
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
 @NgModule({
   declarations: [
@@ -30,15 +40,21 @@ import { reducer } from 'src/store/reducers/users.reducer';
     LoginComponent,
     SignupComponent,
     MapComponent,
-    FriendsSearchPipe
+    FriendsSearchPipe,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     StoreModule.forRoot({
-      user: reducer  
-    })
+      users: UserReducer,
+      currentUser: CurrentUserReducer  
+    }),
+    EffectsModule.forRoot([]),
+    EffectsModule.forFeature([UsersEffects, CurrentUserEffects]),
+    SocketIoModule.forRoot(config)
   ],
   providers: [ FriendsService, AuthGuard, ShouldNotAuthGuard, CurrentUserResolver ],
   bootstrap: [AppComponent]

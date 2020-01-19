@@ -1,0 +1,18 @@
+.nav-link{
+    border-radius: unset;
+    color: white;
+}
+
+.nav-link.active{
+    color: #DC143C;
+}
+
+.nav-item{
+    background-color: #DC143C;
+}
+
+.jumbotron{
+    padding: 2em;
+    border-radius: 0;
+    border-top: 2px solid black;
+}

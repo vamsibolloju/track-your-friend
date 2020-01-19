@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from '../app/shared/guards/auth.guard';
 import { ShouldNotAuthGuard } from '../app/shared/guards/should-not-auth.guard';
+import { ProfileComponent } from './profile/profile.component';
 
 
 const routes: Routes = [{
@@ -17,6 +18,10 @@ const routes: Routes = [{
   },
   {
     path: 'add-a-friend', component: AddAFriendComponent,
+    canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'profile', component: ProfileComponent,
     canActivate: [ AuthGuard ]
   },
   {
