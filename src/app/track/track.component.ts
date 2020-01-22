@@ -6,8 +6,10 @@ import { User } from '../../store/models/user.model';
 import { AppState } from '../app.state'; 
 import { Observable } from 'rxjs';
 import { selectAll } from 'src/store/reducers/users.reducer';
-import { onQueryChange } from '../../store/actions/user.actions';
+import { onQueryChange, updateUser } from '../../store/actions/user.actions';
 import { SocketService } from '../shared/services/socket.service';
+import { HereGeoService } from '../shared/services/here-geo.service';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-track',
@@ -24,16 +26,33 @@ export class TrackComponent implements OnInit {
   loading$: Observable<Boolean>;
   query$: Observable<string>;
 
+  selectedAddressMode: string = 'map';
+  selectedTrackMode: string = 'refresh';   
+  
+  addressModes: Array<string> = [ 'map', 'address-card' ];
+  trackModes: Array<string> = ['refresh', 'eye', 'hand-pointer-o'];
+
+  trackInterval: any;
+
+  friendAddress: any;
+  usersStatus: Array<string> = []; 
+
   lon = 7.37448169999999;
   lat = 17.421397799999998;
 
   constructor(private router: Router,
     private friendsService: FriendsService,
     private store: Store<AppState>,
-    private socketService: SocketService ) { 
+    private socketService: SocketService,
+    private hereGeoService:HereGeoService ) { 
     }
 
   ngOnInit() {
+
+    this.socketService.getUsersStatus().subscribe(usersStatus => {
+      this.usersStatus = usersStatus;
+    });
+
     this.currentUser$ = this.store.select('currentUser');
     this.query$ = this.store.select( state => state.users.query ) 
 
@@ -46,6 +65,12 @@ export class TrackComponent implements OnInit {
                             && ( query ?  ( (user.name.includes(query) || user.mobile.toString().includes(query))  ) : true )
                   ) 
           );
+          this.users$.subscribe(users => {
+            if(this.selected){
+              const selectedUser = users.find(user => user.id === this.selected.id);
+              this.selected = selectedUser;
+            }
+          })
         });
       }
       this.loading$ = this.store.select(state => state.users.loading);
@@ -88,8 +113,23 @@ export class TrackComponent implements OnInit {
   }
 
   selectFriend(friend: User){
+    if(this.selected && this.selected.id === friend.id){
+        return true;
+    }
     this.selected = friend;
+    this.updatePosition(); 
+  }
+
+  private updatePosition(){
+    const friend = this.selected;
     this.socketService.fetchLocation(friend);
+  }
+
+  private updateAddress(){
+    const friend = this.selected;
+    this.hereGeoService.getAddress(friend.lat, friend.lon).subscribe(address => {
+      this.friendAddress = address;
+    });
   }
 
   refreshLocation(event: Event, friend: object){
@@ -98,5 +138,36 @@ export class TrackComponent implements OnInit {
 
   onQuery(event: Event){
     this.store.dispatch(onQueryChange({ query: event.target['value'] }));
+  }
+
+  onAddressModeChange(addressMode: string){
+    if(addressMode === 'address-card'){
+      this.updateAddress();  
+    }
+    this.selectedAddressMode = addressMode;
+    const user: Update<User> = {
+      id : this.selected.id,
+      changes: { addressMode  }
+    };
+    this.store.dispatch(updateUser({ user }));
+  }
+
+  onTrackModeChange(trackMode: string){
+    this.selectedTrackMode = trackMode;
+    const user: Update<User> = {
+      id : this.selected.id,
+      changes: { trackMode  }
+    };
+    this.store.dispatch(updateUser({ user }));
+    this.updatePosition();
+    if(trackMode === 'eye'){
+      this.trackInterval = setInterval(() => {
+        console.log('tracking...')
+        this.updatePosition();
+      }, 2000);
+    }else{
+      clearInterval(this.trackInterval);
+      this.updatePosition();
+    }
   }
 }

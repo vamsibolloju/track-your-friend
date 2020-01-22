@@ -16,6 +16,7 @@ export class UsersEffects{
         ofType(loadUsers),
         switchMap(() => {
             return this.restService.getUsers().pipe(
+                map(users => users.map( user => ({ ...user, addressMode: 'map', trackMode: 'refresh' }) )  ),
                 map(users => loadUsersSuccess({ users })),
                 //catchError(error => of(new LoadUsersFailed(error)))
                 );

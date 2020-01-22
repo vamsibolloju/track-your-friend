@@ -19,23 +19,35 @@
    margin-right: 10px;
 }
 
-.never{
-   background-color: grey;
-}
-
-.pending{
-   background-color: yellow;
-}
-
-.past{
-   background-color: orange;
-}
-
-.current{
+.online{
    background-color: green;
+}
+
+.offline{
+   background-color: grey;
 }
 
 .list-group-item.selected{
    background-color: black;
    color: white;
+}
+
+.btn-custom{
+   background-color: red;
+   margin-right: 1px;
+}
+
+.btn-custom:hover, .btn-custom.selected{
+   border-color: #DC143C;
+   color: #DC143C;
+   background-color: white;
+}
+
+#address-bar{
+   height: 104px; border: 2px solid; margin-bottom:30px;
+   padding: 5px;
+   text-align: center;
+   font-weight: bold;
+   font-size: 10px;
+   background-color: beige;
 }

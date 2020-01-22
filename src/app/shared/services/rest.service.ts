@@ -13,7 +13,7 @@ export class RestService {
     
     getUsers(): Observable<User[]>{
       return this._http.get<User[]>('assets/data/users.json').pipe(
-        delay(2000)
+        delay(500)
       );  
     }
 

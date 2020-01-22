@@ -26,6 +26,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
   
   @Input() lon: number;
   @Input() lat: number;
+  @Input() mapHeight: string = '100px';
   constructor() { }
 
   ngOnInit() {

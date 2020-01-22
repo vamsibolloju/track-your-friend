@@ -30,7 +30,12 @@ const UserReducerFunction = createReducer(
     on(UserActions.onQueryChange, 
       (state, { query }) => {
         return { ...state, query: query }
-      })  
+      }),
+      on(UserActions.updateUser, 
+        (state, { user }) => {
+          return adapter.updateOne(user, state)
+        })  
+
   );
   
   export function UserReducer(state: UsersState | undefined, action: Action) {

@@ -1,3 +1,9 @@
+interface Address{
+    Label: string;
+    Country: string;
+    State: string;
+}
+
 export interface User{
     id: string;
     name : string;
@@ -8,4 +14,7 @@ export interface User{
     lon?: number;
     lat?: number; 
     friends?: Array<string>;
+    trackMode?: string;
+    addressMode?: string;
+    address?: Address
 }

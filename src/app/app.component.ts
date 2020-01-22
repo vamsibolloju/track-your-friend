@@ -27,7 +27,7 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     this.store.dispatch(loadUsers());
     if(localStorage.getItem('currentUser')){
-      //this.socketService.init();
+      this.socketService.init();
       this.store.dispatch(new LoadCurrentUser());
     }
  

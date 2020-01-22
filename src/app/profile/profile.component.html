@@ -3,15 +3,19 @@
     <div class="col-md-6">
       <ul class="list-group">
         <li class="list-group-item"> 
-          <span> Name </span> <br>  <b> {{ currentUser.name}} </b>  
+          <span> Name </span>   
+          <b class="float-right"> {{ currentUser.name}} </b>  
         </li>
         <li class="list-group-item"> 
-          <span> Mobile </span> <br> <b> {{ currentUser.mobile}}  </b>  </li>
+          <span> Mobile </span>  
+          <b class="float-right"> {{ currentUser.mobile}}  </b>  </li>
         <li class="list-group-item"> 
-          <span> Password </span>  <br> <b> {{ currentUser.password}}  </b>  </li>
+          <span> Password </span>
+          <b class="float-right"> {{ currentUser.password}}  </b>  </li>
       </ul>
     </div>  
     <div class="col-md-6">
+      <app-map [mapHeight]="'150px'"  [lon]="currentUser['lon']" [lat]="currentUser['lat']" ></app-map>
     </div>  
   </div>
 </div>

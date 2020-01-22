@@ -1,5 +1,29 @@
-<div class="container">
-    <app-map *ngIf="selected" [lon]="selected['lon']" [lat]="selected['lat']" ></app-map>
+<div class="container" *ngIf="(users$ | async ) as filteredFriends">
+   
+    <ng-container *ngIf="selected">
+      <button *ngFor="let addressMode of addressModes" class="btn btn-sm btn-custom float-right" 
+      [ngClass]="{ 'selected' : addressMode ===  selected.addressMode }" 
+      (click)="onAddressModeChange(addressMode)"> 
+        <i class="fa fa-{{addressMode}}" aria-hidden="true"></i>
+      </button>
+      
+      <button *ngFor="let trackMode of trackModes" 
+      class="btn btn-sm btn-custom" 
+      [ngClass]="{ 'selected' : trackMode === selected.trackMode }"
+      (click)="onTrackModeChange(trackMode)"> 
+        <i class="fa fa-{{trackMode}}" aria-hidden="true"></i>
+      </button>
+
+
+      <app-map *ngIf="selected.addressMode === 'map'"  [lon]="selected['lon']" [lat]="selected['lat']" ></app-map>
+
+      <div id="address-bar" [hidden]="selected.addressMode === 'map'">
+        <span *ngIf="friendAddress"> {{friendAddress?.Label | json}} </span> 
+        <span *ngIf="!friendAddress"> Loading... </span>
+         
+      </div>
+
+    </ng-container>
     <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"> 
@@ -12,34 +36,31 @@
         <div [hidden]="!(loading$ | async)" >
           <img src="assets/icons/loading.gif" width="180px" height="80px" /> 
         </div>
-        <ul class="list-group" *ngIf="(users$ | async ) as filteredFriends">
+        <ul class="list-group">
                 <li class="list-group-item" 
                 *ngFor="let contact of filteredFriends"
                 [ngClass]="{'selected' : selected?.name === contact['name'] }"
                 (click)="selectFriend(contact)">
-                    <span class="status" [ngClass]="contact.status">  </span>
+                    <span class="status" [ngClass]="usersStatus.includes(contact.name) ? 'online' : 'offline'">  </span>
                     <span> {{contact.name}} - {{contact.mobile}} </span>
+                    <!--
                     <i class="fa fa-right fa-trash" aria-hidden="true" (click)="unlinkFriend(contact)"></i>
                     <i class="fa fa-right fa-location-arrow" aria-hidden="true" (click)="trackFriend(contact)"></i>
                     <i class="fa fa-right fa-refresh" aria-hidden="true" [hidden]="selected?.name !== contact.name" (click)="refreshLocation($event, contact)"></i>
-          
+                    -->
                     <div [hidden]="!contact.toggle">
                       <hr>
-
                       <i class="fa fa-refresh" aria-hidden="true"></i>
-
                         address
-                        
                           {{contact | json}}
-                        
                     </div>
                   </li>
-                  <li [hidden]="(filteredFriends)?.length || (loading$ |async)" class="list-group-item text-danger"> 
-                    <span *ngIf="query.value"> No friend found with this query. </span>
-                    <span *ngIf="!query.value"> You have no friends yet, Please add. </span>
-                      
-                  </li>
               </ul>
+
+              <div [hidden]="(filteredFriends)?.length || (loading$ |async)" class="alert alert-warning"> 
+                <span *ngIf="query.value"> No friend found with this query. </span>
+                <span *ngIf="!query.value"> You have no friends yet, Please add. </span>    
+              </div>
               <br>
               <button type="button" 
               class="btn btn-primary"
