@@ -13,8 +13,8 @@ import { updateUser } from 'src/store/actions/user.actions';
 })
 export class SocketService {
     private socket: Socket;
-    //private url: string = 'http://localhost:3000';
-    private url: string =  'https://track-your-friend-socket.herokuapp.com';
+    private url: string = 'http://localhost:3000';
+    //private url: string =  'https://track-your-friend-socket.herokuapp.com';
 
     private users: Array<User>;
     constructor(private _http: HttpClient, private store: Store<AppState>){

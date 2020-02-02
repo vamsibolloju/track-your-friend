@@ -4,11 +4,13 @@ import { Observable, of } from 'rxjs';
 import { User } from 'src/store/models/user.model';
 import { delay, find, filter, map } from 'rxjs/operators';
 
+const service_url = 'http://localhost/php-getting-started/web';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestService {
+        
     constructor(private _http: HttpClient){}
     
     getUsers(): Observable<User[]>{
@@ -19,10 +21,24 @@ export class RestService {
 
     getCurrentUser(): Observable<User>{
       const currentUser = localStorage.getItem('currentUser');
+      return this._http.get<User>(`${service_url}/user.php?id=1`);
+      /*
       return this._http.get<User[]>('assets/data/users.json')
       .pipe(
         map(users => users.find(user => user.name === currentUser ) )
       )
+      */
     }
+
+    login(user){
+      console.log(user);
+      return this._http.post(`${service_url}/login.php`, user);
+    }
+
+    signUp(user){
+      console.log(user);
+      return this._http.post(`${service_url}/signUp.php`, user);
+    }
+
 
 }
