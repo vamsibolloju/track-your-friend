@@ -26,7 +26,11 @@ export class HereGeoService {
             this.geocoder.reverseGeocode(
                 reverseGeocodingParameters,
                 (result) => {
-                    observer.next(result['Response']['View'][0]['Result'][0]['Location']['Address']);   
+                    if(result['Response']['View'].length) {
+                        observer.next(result['Response']['View'][0]['Result'][0]['Location']['Address']);   
+                    }else{
+                        observer.error("No address found!");
+                    }
                 },
                 (e) => { 
                     console.log(e); 

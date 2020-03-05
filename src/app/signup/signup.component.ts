@@ -11,7 +11,10 @@ import { RestService } from '../shared/services/rest.service';
 })
 export class SignupComponent implements OnInit {
 
-  user: object = { name: '', mobile: '',  email:'', password: '' } 
+  user: object = { name: 'test', mobile: '4444444444',  email:'sample@ste.com', password: 'test@123' };
+  signing: boolean = false;
+  error: string;
+  
   constructor(private router: Router,
     private friendsService: FriendsService,
     private restService: RestService) { }
@@ -20,11 +23,19 @@ export class SignupComponent implements OnInit {
   }
 
   signUp(user: User){
-    //this.friendsService.addFriend(user);
-    this.restService.signUp(user).subscribe( (data) => {
-      console.log(data);
-      //this.router.navigateByUrl('/');
+    this.signing = true;
+
+    window.navigator.geolocation.getCurrentPosition((position) => {
+      this.restService.signUp({ ...user, lat: position.coords.latitude, lon: position.coords.longitude }).subscribe( (data) => {
+        if(data['message'] !== 'Success'){
+          this.error = data['message'];
+        }
+        this.signing = false;
+        //this.router.navigateByUrl('/');
     });
+  });
+
+
     
   }
 

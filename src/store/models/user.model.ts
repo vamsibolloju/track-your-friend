@@ -16,5 +16,6 @@ export interface User{
     friends?: Array<string>;
     trackMode?: string;
     addressMode?: string;
-    address?: Address
+    address?: Address;
+    lastUpdated?: number
 }

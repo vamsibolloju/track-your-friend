@@ -10,11 +10,11 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/about']" > 
             <i class="fa fa-info-circle" aria-hidden="true"></i>
-            About 
+            About
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item" [hidden]="currentUser$">
+        <li class="nav-item" [hidden]="(currentUser$ | async )">
           <a class="nav-link" [routerLink]="['/login']"> 
             <i class="fa fa-sign-in" aria-hidden="true"></i>
             Login </a>
@@ -49,17 +49,21 @@
 </nav>
 <div style="height: 3px; background-color: black;"></div>
 
-<div [hidden]="true">
-    <div class="alert alert-{{alertMessage.type}}" role="alert">
+<div *ngIf="(message$ | async) as message" [hidden]=" message.type === '' ">
+
+  <div class="alert alert-{{message.type}}" role="alert">
         <span class="float-right">
-            <i class="fa fa-lock"></i>
+            <!-- <i class="fa fa-lock"></i> 
             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-        </span>  
+            -->
+            <i class="fa fa-close" aria-hidden="true" (click)="clearMessage()"></i>
+        </span>
+
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
       
           <span>
-              {{alertMessage.message}}
+              {{message.message | json}}
           </span>
       </div>      
 </div>

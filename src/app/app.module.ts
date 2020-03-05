@@ -29,6 +29,7 @@ import { UsersEffects } from '../store/effects/users.effect';
 import { CurrentUserEffects } from '../store/effects/currentUser.effect';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { MessageReducer } from 'src/store/reducers/message.reducer';
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
 @NgModule({
@@ -50,7 +51,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     HttpClientModule,
     StoreModule.forRoot({
       users: UserReducer,
-      currentUser: CurrentUserReducer  
+      currentUser: CurrentUserReducer,
+      message: MessageReducer  
     }),
     EffectsModule.forRoot([]),
     EffectsModule.forFeature([UsersEffects, CurrentUserEffects]),

@@ -1,6 +1,9 @@
 <div class="container" *ngIf="(currentUser$ | async) as currentUser">
   <div class="row"> 
     <div class="col-md-6">
+      <!--
+       {{currentUser | json}}
+       --> 
       <ul class="list-group">
         <li class="list-group-item"> 
           <span> Name </span>   
@@ -10,12 +13,16 @@
           <span> Mobile </span>  
           <b class="float-right"> {{ currentUser.mobile}}  </b>  </li>
         <li class="list-group-item"> 
-          <span> Password </span>
-          <b class="float-right"> {{ currentUser.password}}  </b>  </li>
+          <span> Email </span>
+          <b class="float-right"> {{ currentUser.email}}  </b>  </li>
       </ul>
     </div>  
-    <div class="col-md-6">
-      <app-map [mapHeight]="'150px'"  [lon]="currentUser['lon']" [lat]="currentUser['lat']" ></app-map>
+    <div class="col-md-6" *ngIf="position['lon'] && position['lat']">
+      <app-map [mapHeight]="'150px'"  [lon]="position['lon']" [lat]="position['lat']" ></app-map>
+      <button class="btn btn-primary" (click)="saveLocation()"> 
+        <span [hidden]="savingLocation"> Save location </span> 
+        <span [hidden]="!savingLocation"> Saving location ... </span> 
+      </button>
     </div>  
   </div>
 </div>

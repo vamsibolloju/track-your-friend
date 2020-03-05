@@ -7,6 +7,8 @@ import { Store } from '@ngrx/store';
 import { selectAll } from 'src/store/reducers/users.reducer';
 import { Update } from '@ngrx/entity';
 import { updateUser } from 'src/store/actions/user.actions';
+import { Message } from 'src/store/models/message.model';
+import { addMessage } from 'src/store/actions/message.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -43,21 +45,52 @@ export class SocketService {
             });
 
             this.socket.on('requestLocation', (friend_name) => {
-                this.socket.emit( 'responseLocation', { lat : this.lat, lon : this.lon });
-                this.lon = this.lon+ 0.1;
-                this.lat = this.lat+ 0.1;
+                window.navigator.geolocation.getCurrentPosition((position) => {
+                    console.log(`sending location to ${friend_name}, ${position.coords.latitude} - ${position.coords.longitude} `);
+                    this.socket.emit( 'responseLocation', 
+                    { lat : position.coords.latitude, 
+                        lon : position.coords.longitude });
+                })
             });
             
             this.socket.on('responseLocation', ({friend_name, location}) => {
-                    const friend = this.users.find(user => user.name === friend_name);
-                    const user: Update<User> = {
-                        id : friend.id,
-                        changes: { lat: location.lat, lon: location.lon  }
-                      };
-                      this.store.dispatch(updateUser({ user }));
+                console.log(`Got location ${location} of ${friend_name} `);
+                const friend = this.users.find(user => user.name === friend_name);
+                    if( (location['lat'] !== friend['lat']) || 
+                        (location['lon'] !== friend['lon'])  ){
+                            const user: Update<User> = {
+                                id : friend.id,
+                                changes: { lat: location.lat, lon: location.lon, lastUpdated: Date.now()  }
+                              };
+                              this.store.dispatch(updateUser({ user }));
+                    }else{
+                        if(friend.trackMode === 'eye') {
+                            if( ( (Date.now() - friend.lastUpdated)  / 1000 ) > 20  ){
+                                console.log('he is not moving...');
+                                this.store.dispatch(addMessage({  message : { message: `${friend.name} is not moving`, type: 'warning' } }));
+                                const user: Update<User> = {
+                                    id : friend.id,
+                                    changes: { lastUpdated: Date.now()  }
+                                  };
+                                  this.store.dispatch(updateUser({ user }));    
+                            }
+                        };
+                    }
+
+
             });
+
+            this.socket.on('message', (message: Message) => {
+                this.store.dispatch(addMessage({  message }));
+            });
+
         }
     }
+
+    trackRequest(user: string, friend_name: string){
+        this.socket.emit('message', { user, friend_name, message:  { type: 'warning', message : `${user} wants to track you` } } );
+    }
+
 
     fetchLocation(friend: User){
         this.socket.emit('fetchLocation', friend.name);

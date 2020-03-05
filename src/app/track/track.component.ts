@@ -30,15 +30,12 @@ export class TrackComponent implements OnInit {
   selectedTrackMode: string = 'refresh';   
   
   addressModes: Array<string> = [ 'map', 'address-card' ];
-  trackModes: Array<string> = ['refresh', 'eye', 'hand-pointer-o'];
+  trackModes: Array<string> = ['refresh', 'eye']; // , 'hand-pointer-o'
 
   trackInterval: any;
 
   friendAddress: any;
   usersStatus: Array<string> = []; 
-
-  lon = 7.37448169999999;
-  lat = 17.421397799999998;
 
   constructor(private router: Router,
     private friendsService: FriendsService,
@@ -60,10 +57,11 @@ export class TrackComponent implements OnInit {
       if(currentUser){
         this.query$.subscribe(query => {
           this.users$ = this.store.select( state => selectAll(state.users)
-          .filter( user => user.id !== currentUser.id 
-                            && currentUser['friends'].includes(user.id)
+          .filter( user => { 
+            return user.id !== currentUser.id 
+                            && (currentUser['friends'] || [] ).includes(user.id)
                             && ( query ?  ( (user.name.includes(query) || user.mobile.toString().includes(query))  ) : true )
-                  ) 
+          }) 
           );
           this.users$.subscribe(users => {
             if(this.selected){
@@ -116,8 +114,13 @@ export class TrackComponent implements OnInit {
     if(this.selected && this.selected.id === friend.id){
         return true;
     }
+    this.clearInterval(); 
     this.selected = friend;
-    this.updatePosition(); 
+    if(this.selected.trackMode === 'eye' ){
+      this.setInterval();
+    }else{
+      this.updatePosition();
+    };
   }
 
   private updatePosition(){
@@ -129,6 +132,8 @@ export class TrackComponent implements OnInit {
     const friend = this.selected;
     this.hereGeoService.getAddress(friend.lat, friend.lon).subscribe(address => {
       this.friendAddress = address;
+    }, error => {
+      console.log(error);
     });
   }
 
@@ -159,15 +164,27 @@ export class TrackComponent implements OnInit {
       changes: { trackMode  }
     };
     this.store.dispatch(updateUser({ user }));
-    this.updatePosition();
+    //this.updatePosition();
     if(trackMode === 'eye'){
-      this.trackInterval = setInterval(() => {
-        console.log('tracking...')
-        this.updatePosition();
-      }, 2000);
+      this.setInterval();
     }else{
-      clearInterval(this.trackInterval);
+      this.clearInterval();
       this.updatePosition();
+    }
+  }
+
+  setInterval(){
+    this.trackInterval = setInterval(() => {
+      console.log(`tracking on ${this.selected.name} ... `)
+      this.updatePosition();
+    }, 2000);
+  }
+
+  clearInterval(){
+    if(this.trackInterval){
+      console.log(`stop tracking on ${this.selected.name}`);
+      clearInterval(this.trackInterval);
+      this.trackInterval = null;
     }
   }
 }

@@ -60,7 +60,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
     tiles.addTo(this.map);
   }
 
-  setMarker(lon, lat){
+  setMarker( lat, lon ){
     if(this.marker){
       this.map.removeLayer(this.marker);
     }

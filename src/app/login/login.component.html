@@ -36,9 +36,10 @@
                   required
                   >
                 </div>
-                <button type="submit" class="btn btn-primary" [disabled]="loginForm.form.invalid">
+                <button type="submit" class="btn btn-primary" [disabled]="loginForm.form.invalid || logging">
                     <i class="fa fa-sign-in" aria-hidden="true"></i>
-                    Login
+                    <span [hidden] = "logging"> Login </span>
+                    <span [hidden] = "!logging"> Loging in ... </span>
                 </button>
             </form>
             <hr>

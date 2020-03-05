@@ -1,4 +1,8 @@
 <div class="container">
+  <div class="alert alert-danger" [hidden]="!error"> 
+    <i class="fa fa-times float-right" (click)="error = null" aria-hidden="true"></i>
+    {{error}}
+  </div>
         <form (submit)="signUp(userForm.form.value)"  #userForm="ngForm">
                 <div class="form-group">
                         <label for="exampleInputEmail1">
@@ -54,8 +58,10 @@
                     [(ngModel)]="user['password']"
                     required>
                 </div>
-                <button type="submit" class="btn btn-primary" [disabled]="userForm.form.invalid">
-                    <i class="fa fa-sign-in" aria-hidden="true"></i> Sign up
+                <button type="submit" class="btn btn-primary" [disabled]="userForm.form.invalid || signing">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> 
+                    <span [hidden]="signing"> Sign up </span>
+                    <span [hidden]="!signing"> Signing up ..... </span>
                   </button>
             </form>
             <hr>

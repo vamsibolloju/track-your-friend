@@ -8,6 +8,7 @@ import { AppState } from '../app.state';
 import { map } from 'rxjs/operators';
 import { AddAsAFriend} from '../../store/actions/currentUser.actions'
 import { selectAll } from 'src/store/reducers/users.reducer';
+import { RestService } from '../shared/services/rest.service';
 
 @Component({
   selector: 'app-add-afriend',
@@ -24,15 +25,17 @@ export class AddAFriendComponent implements OnInit {
   searchQuery:string;
   users$: Observable<User[]>;
   loading$: Observable<boolean>;
+  currentUserId: string;
 
   constructor(private router: Router,
-    private _friendsService:FriendsService,
-    private store: Store<AppState>) { }
+    private store: Store<AppState>,
+    private restService: RestService) { }
 
   ngOnInit() {
     this.currentUser$ = this.store.select('currentUser');
     this.currentUser$.subscribe(currentUser => {
       if(currentUser){
+        this.currentUserId = currentUser.id;
         this.users$ = this.store.select( state => selectAll(state.users)
         .filter(u => u.id !== currentUser.id && !currentUser['friends'].includes(u.id) ) );
       }
@@ -57,6 +60,9 @@ export class AddAFriendComponent implements OnInit {
 
   addFriendFromList(friend: User){
     this.store.dispatch(new AddAsAFriend(friend));
+    this.restService.addAFriend( this.currentUserId, friend.id).subscribe(data => {
+      console.log(data);
+    });   
     //this._friendsService.addAFriend(this.currentUser, friend);
     //this.router.navigateByUrl('/');
   }
